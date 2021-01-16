@@ -1,8 +1,12 @@
+import 'package:anbyshop/screen/security/loginScreen.dart';
+import 'package:anbyshop/services/auth.service.dart';
 import 'package:anbyshop/util/colors.dart';
 import 'package:anbyshop/util/inputWithIcon.dart';
 import 'package:anbyshop/util/outlineButton.dart';
 import 'package:anbyshop/util/primaryButton.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const blue = CustomColors.PrimaryColor;
 const kTitleStyle = TextStyle(
@@ -22,24 +26,24 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
   var _backgroundColor = Colors.white;
   var _headingColor = Color(0xFFB40284A);
 
-  double _headingTop = 100;
-
-  double _loginWidth = 0;
-  double _loginHeight = 0;
-  double _loginOpacity = 1;
-
-  double _loginYOffset = 0;
-  double _loginXOffset = 0;
-  double _registerYOffset = 0;
-  double _registerHeight = 0;
-
   double windowWidth = 0;
   double windowHeight = 0;
 
   bool _keyboardVisible = false;
 
+  TextEditingController _phoneNumberControllder = new TextEditingController();
+  TextEditingController _verifyControllder = new TextEditingController();
+
+  String phoneNumber;
+
   @override
   void initState() {
+    _phoneNumberControllder.addListener(() {
+      setState(() {
+        phoneNumber = _phoneNumberControllder.value.text;
+      });
+    });
+
     super.initState();
 
     // KeyboardVisibilityNotification().addNewListener(
@@ -54,75 +58,37 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AuthService authService = new AuthService();
+
     windowHeight = MediaQuery.of(context).size.height;
     windowWidth = MediaQuery.of(context).size.width;
 
-    _loginHeight = windowHeight - 270;
-    _registerHeight = windowHeight - 270;
-
-    TextEditingController _phoneNumberControllder = new TextEditingController();
-    TextEditingController _verifyControllder = new TextEditingController();
-
-    switch (_pageState) {
-      case 0:
-        _backgroundColor = Colors.white;
-        _headingColor = Color(0xFFB40284A);
-
-        _headingTop = 100;
-
-        _loginWidth = windowWidth;
-        _loginOpacity = 1;
-
-        _loginYOffset = windowHeight;
-        _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 270;
-
-        _loginXOffset = 0;
-        _registerYOffset = windowHeight;
-        break;
-      case 1:
-        _backgroundColor = blue;
-        _headingColor = Colors.white;
-
-        _headingTop = 90;
-
-        _loginWidth = windowWidth;
-        _loginOpacity = 1;
-
-        _loginYOffset = _keyboardVisible ? 40 : 270;
-        _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 270;
-
-        _loginXOffset = 0;
-        _registerYOffset = windowHeight;
-        break;
-      case 2:
-        _backgroundColor = blue;
-        _headingColor = Colors.white;
-
-        _headingTop = 80;
-
-        _loginWidth = windowWidth - 40;
-        _loginOpacity = 0.7;
-
-        _loginYOffset = _keyboardVisible ? 30 : 240;
-        _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 240;
-
-        _loginXOffset = 20;
-        _registerYOffset = _keyboardVisible ? 55 : 270;
-        _registerHeight = _keyboardVisible ? windowHeight : windowHeight - 270;
-        break;
+    _verifyOtp() {
+      authService
+          .login(_phoneNumberControllder.text, _verifyControllder.text)
+          .then((value) => {
+                if (value)
+                  {
+                    Get.snackbar("Success", "You have successfully loggedIn.",
+                        backgroundColor: Colors.white),
+                  }
+                else
+                  {
+                    Get.snackbar("Error", "Unable to verify.",
+                        backgroundColor: Colors.white)
+                  }
+              });
     }
-
-    Future<bool> _sendOTP() {}
 
     return Scaffold(
       backgroundColor: _backgroundColor,
       body: Stack(children: [
-        Container(
-          child: Stack(children: [
-            AnimatedContainer(
-              curve: Curves.fastLinearToSlowEaseIn,
-              duration: Duration(milliseconds: 1000),
-              child: Column(children: [
+        AnimatedContainer(
+          curve: Curves.fastLinearToSlowEaseIn,
+          duration: Duration(milliseconds: 1000),
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
                 GestureDetector(
                   onTap: () {
                     setState(() {
@@ -136,7 +102,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                           curve: Curves.fastLinearToSlowEaseIn,
                           duration: Duration(milliseconds: 1000),
                           margin: EdgeInsets.only(
-                            top: _headingTop,
+                            top: 0,
                           ),
                           child: Text(
                             "Shop Now",
@@ -169,13 +135,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                 Container(
                   child: GestureDetector(
                     onTap: () {
-                      setState(() {
-                        if (_pageState != 0) {
-                          _pageState = 0;
-                        } else {
-                          _pageState = 1;
-                        }
-                      });
+                      Get.to(LoginScreen());
                     },
                     child: Container(
                       margin: EdgeInsets.all(32),
@@ -193,123 +153,171 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                   ),
                 )
               ]),
-            ),
-            AnimatedContainer(
-              padding: EdgeInsets.all(32),
-              width: _loginWidth,
-              height: _loginHeight,
-              curve: Curves.fastLinearToSlowEaseIn,
-              duration: Duration(milliseconds: 1000),
-              transform:
-                  Matrix4.translationValues(_loginXOffset, _loginYOffset, 1),
-              decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(_loginOpacity),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25))),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(bottom: 20),
-                        child: Text(
-                          "Login To Continue",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                      CustomInputWithIcon(
-                        controller: _phoneNumberControllder,
-                        icon: Icons.phone,
-                        hint: "Enter Phone...",
-                        isPassword: false,
-                        type: TextInputType.phone,
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _pageState = 2;
-                          });
-                        },
-                        child: CustomPrimaryButton(
-                          btnText: "Send OTP",
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            AnimatedContainer(
-              height: _registerHeight,
-              padding: EdgeInsets.all(32),
-              curve: Curves.fastLinearToSlowEaseIn,
-              duration: Duration(milliseconds: 1000),
-              transform: Matrix4.translationValues(0, _registerYOffset, 1),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25))),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Column(
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(bottom: 20),
-                        child: Text(
-                          "Verify OTP",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
-                      CustomInputWithIcon(
-                        icon: Icons.code,
-                        hint: "Enter OTP...",
-                        isPassword: false,
-                        type: TextInputType.number,
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: <Widget>[
-                      CustomPrimaryButton(
-                        btnText: "Verify OTP",
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _pageState = 1;
-                          });
-                        },
-                        child: CustomOutlineButton(
-                          btnText: "Back To Login",
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ]),
         ),
+
+        // AnimatedContainer(s
+        //   width: _loginWidth,
+        //   height: _loginHeight,
+        //   curve: Curves.fastLinearToSlowEaseIn,
+        //   duration: Duration(milliseconds: 100),
+        //   transform: Matrix4.translationValues(_loginXOffset, _loginYOffset, 1),
+        //   decoration: BoxDecoration(
+        //     color: Colors.white.withOpacity(_loginOpacity),
+        //   ),
+        //   child: Container(
+        //     decoration: new BoxDecoration(
+        //         gradient: new LinearGradient(
+        //             colors: [
+        //               Colors.black,
+        //               Colors.grey,
+        //             ],
+        //             stops: [
+        //               0.0,
+        //               1.0
+        //             ],
+        //             begin: FractionalOffset.topCenter,
+        //             end: FractionalOffset.bottomCenter,
+        //             tileMode: TileMode.repeated),
+        //         image: DecorationImage(
+        //             image: AssetImage("assets/images/secure.png"))),
+        //     child: Container(
+        //       padding: EdgeInsets.all(16),
+        //       margin: EdgeInsets.symmetric(horizontal: 8),
+        //       decoration: BoxDecoration(color: Colors.white),
+        //       child: Column(
+        //         crossAxisAlignment: CrossAxisAlignment.start,
+        //         mainAxisAlignment: MainAxisAlignment.end,
+        //         children: <Widget>[
+        //           Column(
+        //             children: <Widget>[
+        //               Container(
+        //                 width: windowWidth,
+        //                 margin: EdgeInsets.only(bottom: 5),
+        //                 child: Text(
+        //                   "Login To Continue",
+        //                   textAlign: TextAlign.left,
+        //                   style: TextStyle(
+        //                       fontSize: 28, fontFamily: "Nunito-Bold"),
+        //                 ),
+        //               ),
+        //               Container(
+        //                 margin: EdgeInsets.only(bottom: 10),
+        //                 width: windowWidth,
+        //                 child: Text(
+        //                   "An otp will be sent to the registered mobile number.",
+        //                   textAlign: TextAlign.left,
+        //                   style: TextStyle(fontSize: 14, fontFamily: "Nunito"),
+        //                 ),
+        //               ),
+        //               CustomInputWithIcon(
+        //                 controller: _phoneNumberControllder,
+        //                 icon: Icons.phone,
+        //                 hint: "Enter Phone...",
+        //                 isPassword: false,
+        //                 type: TextInputType.phone,
+        //               ),
+        //             ],
+        //           ),
+        //           SizedBox(
+        //             height: 50,
+        //           ),
+        //           Column(
+        //             children: <Widget>[
+        //               GestureDetector(
+        //                 onTap: () {
+        //                   if (_phoneNumberControllder.text.isNotEmpty) {
+        //                     String mobilePattern =
+        //                         r'(^(?:[+0]9)?[0-9]{10,12}$)';
+        //                     RegExp regExp = new RegExp(mobilePattern);
+        //                     if (!regExp
+        //                         .hasMatch(_phoneNumberControllder.text)) {
+        //                       Get.snackbar(
+        //                           "Error", "Please enter a valid phone number");
+        //                     } else {
+        //                       _sendOTP();
+        //                     }
+        //                   } else {
+        //                     Get.snackbar(
+        //                         "Error", "Please enter a valid phone number");
+        //                   }
+        //                 },
+        //                 child: isLoading
+        //                     ? CircularProgressIndicator()
+        //                     : CustomPrimaryButton(
+        //                         btnText: "Send OTP",
+        //                       ),
+        //               ),
+        //               SizedBox(
+        //                 height: 20,
+        //               ),
+        //             ],
+        //           ),
+        //         ],
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        // AnimatedContainer(
+        //   height: _registerHeight,
+        //   padding: EdgeInsets.all(32),
+        //   curve: Curves.fastLinearToSlowEaseIn,
+        //   duration: Duration(milliseconds: 1000),
+        //   transform: Matrix4.translationValues(0, _registerYOffset, 1),
+        //   decoration: BoxDecoration(
+        //     color: Colors.white,
+        //   ),
+        //   child: Column(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: <Widget>[
+        //       Column(
+        //         children: <Widget>[
+        //           Container(
+        //             margin: EdgeInsets.only(bottom: 20),
+        //             child: Text(
+        //               "Verify OTP",
+        //               style: TextStyle(fontSize: 20),
+        //             ),
+        //           ),
+        //           CustomInputWithIcon(
+        //             controller: _verifyControllder,
+        //             icon: Icons.code,
+        //             hint: "Enter OTP...",
+        //             isPassword: false,
+        //             type: TextInputType.number,
+        //           ),
+        //           SizedBox(
+        //             height: 20,
+        //           ),
+        //         ],
+        //       ),
+        //       Column(
+        //         children: <Widget>[
+        //           GestureDetector(
+        //             onTap: () {
+        //               _verifyOtp();
+        //             },
+        //             child: CustomPrimaryButton(
+        //               btnText: "Verify OTP",
+        //             ),
+        //           ),
+        //           SizedBox(
+        //             height: 20,
+        //           ),
+        //           GestureDetector(
+        //             onTap: () {
+        //               setState(() {
+        //                 _pageState = 1;
+        //               });
+        //             },
+        //             child: CustomOutlineButton(
+        //               btnText: "Back To Login",
+        //             ),
+        //           )
+        //         ],
+        //       ),
+        //     ],
+        //   ),
+        // )
       ]),
     );
   }

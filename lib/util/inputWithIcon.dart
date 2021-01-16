@@ -1,3 +1,4 @@
+import 'package:anbyshop/util/colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomInputWithIcon extends StatelessWidget {
@@ -17,32 +18,26 @@ class CustomInputWithIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          border: Border.all(color: Color(0xFFBC7C7C7), width: 2),
-          borderRadius: BorderRadius.circular(50)),
-      child: Row(
-        children: <Widget>[
-          Container(
-              width: 60,
-              child: Icon(
-                icon,
-                size: 20,
-                color: Color(0xFFBB9B9B9),
-              )),
-          Expanded(
-            child: TextField(
-              controller: controller,
-              obscureText: isPassword,
-              keyboardType: type,
-              decoration: InputDecoration(
-                  contentPadding: EdgeInsets.symmetric(vertical: 20),
-                  border: InputBorder.none,
-                  hintText: hint),
-            ),
-          )
-        ],
-      ),
+    return TextFormField(
+      controller: controller,
+      obscureText: isPassword,
+      keyboardType: type,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+          border: new OutlineInputBorder(
+            borderSide:
+                new BorderSide(color: CustomColors.PrimaryColor, width: 2),
+          ),
+          focusedBorder: new OutlineInputBorder(
+            borderSide:
+                new BorderSide(color: CustomColors.PrimaryColor, width: 2),
+          ),
+          prefixIcon: Icon(
+            icon,
+            size: 16,
+            color: CustomColors.PrimaryColor,
+          ),
+          hintText: hint),
     );
   }
 }

@@ -10,8 +10,8 @@ class CustomPrimaryButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
           color: CustomColors.PrimaryColor,
-          borderRadius: BorderRadius.circular(50)),
-      padding: EdgeInsets.all(20),
+          borderRadius: BorderRadius.circular(5)),
+      padding: EdgeInsets.all(10),
       child: Center(
         child: Text(
           btnText,
