@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Color whiteBGCOLOR = Colors.white.withOpacity(.95);
+Color whiteBGCOLOR = Colors.white.withOpacity(.5);
 
 class AnbyColors {
   static const PrimaryColor = Colors.black87;

@@ -27,8 +27,6 @@ void main() async {
               primarySwatch: Colors.orange,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            home: sharedPreferences.getString("token").isNotEmpty
-                ? HomeScreen()
-                : OnBoardingScreen());
+            home: HomeScreen());
       }));
 }
