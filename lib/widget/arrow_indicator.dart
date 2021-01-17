@@ -1,8 +1,9 @@
 import 'dart:math';
 
+import 'package:anbyshop/util/colors.dart';
 import 'package:flutter/material.dart';
 
-const blue = Color(0xFFBFF9A63);
+const blue = AnbyColors.PrimaryColor;
 
 class AnimatedIndicator extends StatefulWidget {
   final Duration duration;

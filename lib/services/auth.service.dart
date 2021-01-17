@@ -13,15 +13,15 @@ class AuthService {
   bool isLoggedIn = false;
   AuthService();
 
-  SharedPrefs prefs = new SharedPrefs();
-
   Future<bool> checkAuthState() async {
     WidgetsFlutterBinding.ensureInitialized();
-
-    if (prefs.token.isNotEmpty) {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.getString("token").isNotEmpty) {
       isLoggedIn = true;
+      return true;
     } else {
       isLoggedIn = false;
+      return false;
     }
   }
 
@@ -48,17 +48,15 @@ class AuthService {
 
     var obj = {"phone": phonenumber, "otp": otp};
 
-    debugPrint(obj.toString());
     var response = await http.post(
         "https://api.soft-impressions.com/user/auth/login",
         headers: null,
         body: obj);
 
-    debugPrint(response.body.toString());
     if (response.statusCode == 201) {
       var parsed = jsonDecode(response.body);
       token = parsed["token"];
-
+      SharedPrefs prefs = new SharedPrefs();
       prefs.settoken(token);
       return Future.value(true);
     } else {

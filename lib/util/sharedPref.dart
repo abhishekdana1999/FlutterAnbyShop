@@ -8,10 +8,14 @@ class SharedPrefs {
     }
   }
 
-  String get token => _sharedPrefs.getString("token") ?? "";
+  getToken() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getString("token");
+  }
 
-  settoken(String value) {
-    _sharedPrefs.setString("token", value);
+  settoken(String value) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString("token", value);
   }
 }
 
