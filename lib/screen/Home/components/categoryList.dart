@@ -24,7 +24,7 @@ class _CategoryListState extends State<CategoryList> {
     _getCateoryList() async {
       isLoading = true;
       var response = await http.get(
-          "https://api.soft-impressions.com/category?size=12&currentPage=1",
+          "https://api.soft-impressions.com/category?size=15&currentPage=1",
           headers: null);
 
       if (response.statusCode == 200) {
@@ -40,12 +40,18 @@ class _CategoryListState extends State<CategoryList> {
             color: Colors.white,
             width: MediaQuery.of(context).size.width,
             padding: EdgeInsets.all(AnbySize.basePadding * 2),
-            child: Text(
-              "Categories",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                  fontSize: AnbySize.headingFontSize,
-                  fontFamily: AnbyfontFamily.anbyFontMedium),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Categories",
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      fontSize: AnbySize.headingFontSize,
+                      fontFamily: AnbyfontFamily.anbyFontMedium),
+                ),
+              ],
             )),
         SingleChildScrollView(
           child: Container(
@@ -58,14 +64,16 @@ class _CategoryListState extends State<CategoryList> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return GridView.count(
-                      crossAxisCount: 4,
+                      physics: ScrollPhysics(),
+                      crossAxisCount: 5,
                       childAspectRatio: 1.0,
                       padding: const EdgeInsets.all(4.0),
-                      mainAxisSpacing: 4.0,
-                      crossAxisSpacing: 4.0,
+                      mainAxisSpacing: 1.0,
+                      crossAxisSpacing: 1.0,
                       children: List.generate(
                           items.length,
                           (index) => Container(
+                                padding: EdgeInsets.all(4),
                                 decoration: BoxDecoration(
                                     border: Border.all(
                                         color: Colors.grey[400], width: 0.5)),
@@ -80,7 +88,7 @@ class _CategoryListState extends State<CategoryList> {
                                       Image.network(
                                         items[index]["lowResolutionImage"][0]
                                             ["url"],
-                                        height: 25,
+                                        height: 30,
                                         fit: BoxFit.cover,
                                       ),
                                       Text(
@@ -88,7 +96,7 @@ class _CategoryListState extends State<CategoryList> {
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontSize:
-                                                AnbySize.baseFontSize * 1.5,
+                                                AnbySize.baseFontSize * 1.6,
                                             color: Colors.black,
                                             fontFamily:
                                                 AnbyfontFamily.anbyFontMedium),

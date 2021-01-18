@@ -9,22 +9,22 @@ import 'package:flutter/rendering.dart';
 
 final offerList = [
   {
-    'color': Colors.red[600],
+    'color': Colors.black87,
     "image":
         "https://images.unsplash.com/photo-1610812035082-c14ee33cab1e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=735&q=80"
   },
   {
-    'color': Colors.orange[600],
+    'color': Colors.black87,
     "image":
         "https://images.unsplash.com/photo-1610827294854-ca615b1620bb?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
   },
   {
-    'color': Colors.pink[600],
+    'color': Colors.black87,
     "image":
         "https://images.unsplash.com/photo-1610822393951-572e0b8ae474?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxM3x8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
   },
   {
-    'color': Colors.teal[600],
+    'color': Colors.black87,
     "image":
         "https://images.unsplash.com/photo-1610876371094-244b637600da?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxNnx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
   }
