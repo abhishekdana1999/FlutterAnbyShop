@@ -1,4 +1,5 @@
-import 'package:anbyshop/util/size.dart';
+import 'package:anbyshop/util/font_family.dart';
+import 'package:anbyshop/util/size_config.dart';
 import 'package:flutter/material.dart';
 
 class Offer extends StatelessWidget {
@@ -8,16 +9,12 @@ class Offer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(AnbySize.basePadding / 1.2),
-      width: MediaQuery.of(context).size.width / 1.3,
-      height: 200,
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.black,
-            image: DecorationImage(
-                image: NetworkImage(offer["image"]), fit: BoxFit.cover),
-            borderRadius: BorderRadius.circular(AnbySize.baseSize)),
-      ),
+      width: MediaQuery.of(context).size.width / 1.4,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          image: DecorationImage(
+              image: NetworkImage(offer["image"]), fit: BoxFit.cover),
+          borderRadius: BorderRadius.circular(AnbySize.baseSize)),
     );
   }
 }

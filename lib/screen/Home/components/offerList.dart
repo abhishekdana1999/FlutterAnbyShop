@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:anbyshop/util/colors.dart';
-import 'package:anbyshop/util/size.dart';
+import 'package:anbyshop/util/font_family.dart';
 import 'package:anbyshop/widgets/offer/offer.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,22 +11,22 @@ final offerList = [
   {
     'color': Colors.black87,
     "image":
-        "https://images.unsplash.com/photo-1610812035082-c14ee33cab1e?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=735&q=80"
+        "https://static.soft-impressions.com/softimpression/offer/big%20grocery%20sale%20%281%29-compressed.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20210118%2F%2Fs3%2Faws4_request&X-Amz-Date=20210118T093522Z&X-Amz-Expires=432000&X-Amz-SignedHeaders=host&X-Amz-Signature=30a44aef4102ff7d10c0cc6280c6d1ea9d22614f291e7921d54caefa3b5ffc85"
   },
   {
     'color': Colors.black87,
     "image":
-        "https://images.unsplash.com/photo-1610827294854-ca615b1620bb?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxMHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        "https://static.soft-impressions.com/softimpression/offer/snaks%20%281%29.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20210118%2F%2Fs3%2Faws4_request&X-Amz-Date=20210118T093551Z&X-Amz-Expires=432000&X-Amz-SignedHeaders=host&X-Amz-Signature=afad898dc3b8f6c0c92f5d8a306beabff2151799d3651e6a42fe8186ad57c7f2"
   },
   {
     'color': Colors.black87,
     "image":
-        "https://images.unsplash.com/photo-1610822393951-572e0b8ae474?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxM3x8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        "https://static.soft-impressions.com/softimpression/offer/healthy%20breakfast%20%281%29.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20210118%2F%2Fs3%2Faws4_request&X-Amz-Date=20210118T093602Z&X-Amz-Expires=432000&X-Amz-SignedHeaders=host&X-Amz-Signature=20d56bb24279dda106651f3e044979e0d080ed4f7c544cb24bcdde3534569018"
   },
   {
     'color': Colors.black87,
     "image":
-        "https://images.unsplash.com/photo-1610876371094-244b637600da?ixid=MXwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxNnx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+        "https://static.soft-impressions.com/softimpression/offer/banner%20havells-compressed.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20210118%2F%2Fs3%2Faws4_request&X-Amz-Date=20210118T093615Z&X-Amz-Expires=432000&X-Amz-SignedHeaders=host&X-Amz-Signature=4ceb1bf913e27e73d36de1c9bbf2ea1b589fe9227dfacf6b062ca9857bc619d5"
   }
 ];
 
@@ -122,25 +122,10 @@ class CardScrollWidget extends StatelessWidget {
             start: start,
             textDirection: TextDirection.rtl,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(16.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    color: offerList[i]['color'],
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black12,
-                          offset: Offset(3.0, 6.0),
-                          blurRadius: 10.0)
-                    ]),
-                child: AspectRatio(
-                  aspectRatio: cardAspactRatio,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: <Widget>[],
-                  ),
-                ),
-              ),
-            ),
+                borderRadius: BorderRadius.circular(16.0),
+                child: Offer(
+                  offer: offerList[i],
+                )),
           );
           cardList.add(cardItem);
         }

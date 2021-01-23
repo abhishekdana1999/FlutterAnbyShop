@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs {
@@ -16,6 +17,12 @@ class SharedPrefs {
   settoken(String value) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("token", value);
+  }
+
+  setId(String id) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString("id", id);
+    debugPrint(sharedPreferences.getString("id"));
   }
 }
 

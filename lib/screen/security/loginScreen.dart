@@ -3,9 +3,10 @@ import 'package:anbyshop/services/auth.service.dart';
 import 'package:anbyshop/util/colors.dart';
 import 'package:anbyshop/util/inputWithIcon.dart';
 import 'package:anbyshop/util/keyboard.dart';
+import 'package:anbyshop/util/size_config.dart';
 
 import 'package:anbyshop/widgets/BaseWidgets/AnbyPrimaryButton.dart';
-import 'package:anbyshop/util/size.dart';
+import 'package:anbyshop/util/font_family.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -185,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen>
                                   ? Colors.black54
                                   : AnbyColors.PrimaryColor,
                               btnText: "Login / SignUp",
-                              textAlign: TextAlign.left,
+                              textAlign: null,
                               fontSize: AnbySize.baseFontSize * 2,
                               icon: Icons.arrow_right_alt,
                             )),
@@ -280,7 +281,7 @@ class _LoginScreenState extends State<LoginScreen>
                                   : AnbyColors.PrimaryColor,
                               btnText: "Verify OTP",
                               fontSize: AnbySize.baseFontSize * 1.5,
-                              textAlign: TextAlign.left,
+                              textAlign: null,
                               icon: Icons.arrow_right_alt,
                             )),
                       ],

@@ -3,8 +3,9 @@ import 'package:anbyshop/services/auth.service.dart';
 import 'package:anbyshop/util/animation.dart';
 import 'package:anbyshop/util/colors.dart';
 import 'package:anbyshop/util/inputWithIcon.dart';
+import 'package:anbyshop/util/size_config.dart';
 import 'package:anbyshop/widgets/BaseWidgets/AnbyPrimaryButton.dart';
-import 'package:anbyshop/util/size.dart';
+import 'package:anbyshop/util/font_family.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -111,7 +112,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                         color: AnbyColors.PrimaryColor,
                         icon: Icons.arrow_right_alt,
                         fontSize: AnbySize.baseFontSize * 2,
-                        textAlign: TextAlign.left,
+                        textAlign: null,
                       ),
                     ),
                   ),

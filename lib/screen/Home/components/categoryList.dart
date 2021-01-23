@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:anbyshop/util/colors.dart';
-import 'package:anbyshop/util/size.dart';
+import 'package:anbyshop/util/font_family.dart';
+import 'package:anbyshop/util/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -24,7 +25,7 @@ class _CategoryListState extends State<CategoryList> {
     _getCateoryList() async {
       isLoading = true;
       var response = await http.get(
-          "https://api.soft-impressions.com/category?size=15&currentPage=1",
+          "https://api.soft-impressions.com/category?size=12&currentPage=1",
           headers: null);
 
       if (response.statusCode == 200) {
@@ -35,88 +36,98 @@ class _CategoryListState extends State<CategoryList> {
     }
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
+          alignment: Alignment.center,
+          height: 300,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
             color: Colors.white,
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.all(AnbySize.basePadding * 2),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Categories",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      fontSize: AnbySize.headingFontSize,
-                      fontFamily: AnbyfontFamily.anbyFontMedium),
-                ),
-              ],
-            )),
-        SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.of(context).size.height / 2,
-            decoration: BoxDecoration(
-              color: Colors.white,
-            ),
-            child: FutureBuilder(
-                future: _getCateoryList(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return GridView.count(
-                      physics: ScrollPhysics(),
-                      crossAxisCount: 5,
-                      childAspectRatio: 1.0,
-                      padding: const EdgeInsets.all(4.0),
-                      mainAxisSpacing: 1.0,
-                      crossAxisSpacing: 1.0,
-                      children: List.generate(
-                          items.length,
-                          (index) => Container(
-                                padding: EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.grey[400], width: 0.5)),
-                                child: Center(
-                                    child: Container(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Image.network(
-                                        items[index]["lowResolutionImage"][0]
-                                            ["url"],
-                                        height: 30,
-                                        fit: BoxFit.cover,
-                                      ),
-                                      Text(
-                                        items[index]["name"],
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize:
-                                                AnbySize.baseFontSize * 1.6,
-                                            color: Colors.black,
-                                            fontFamily:
-                                                AnbyfontFamily.anbyFontMedium),
-                                      )
-                                    ],
-                                  ),
-                                )),
-                              )),
-                    );
-                  }
-
-                  if (snapshot.hasError) {
-                    Get.snackbar("Error", snapshot.error);
-                  }
-
-                  return CircularProgressIndicator();
-                }),
           ),
+          child: FutureBuilder(
+              future: _getCateoryList(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return AlignedGrid(
+                    items: items,
+                  );
+                }
+
+                if (snapshot.hasError) {
+                  Get.snackbar("Error", snapshot.error);
+                }
+
+                return Container(
+                    height: 200,
+                    width: 200,
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator());
+              }),
         ),
       ],
     );
+  }
+}
+
+class AlignedGrid extends StatelessWidget {
+  List items;
+  final double runSpacing = 4;
+  final double spacing = 4;
+  final int listSize = 15;
+  final columns = 4;
+
+  AlignedGrid({this.items});
+  @override
+  Widget build(BuildContext context) {
+    final w = (MediaQuery.of(context).size.width - runSpacing * (columns - 1)) /
+        columns;
+    return SingleChildScrollView(
+        child: GridView.count(
+      shrinkWrap: true,
+      physics: ScrollPhysics(),
+      crossAxisCount: 4,
+      childAspectRatio: 1.0,
+      mainAxisSpacing: 0.0,
+      crossAxisSpacing: 0.0,
+      children: List.generate(
+          items.length,
+          (index) => Material(
+                color: Colors.white,
+                child: InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                        border:
+                            Border.all(color: Colors.grey[100], width: 0.5)),
+                    child: Center(
+                        child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Image.network(
+                            items[index]["lowResolutionImage"][0]["url"],
+                            height: 40,
+                            width: 40,
+                            fit: BoxFit.cover,
+                          ),
+                          Text(
+                            items[index]["name"],
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: AnbySize.baseFontSize * 1.3,
+                                color: Colors.black,
+                                fontFamily: AnbyfontFamily.anbyFontRegular),
+                          )
+                        ],
+                      ),
+                    )),
+                  ),
+                ),
+              )),
+    ));
   }
 }

@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:anbyshop/services/user.service.dart';
 import 'package:anbyshop/util/sharedPref.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'package:http/http.dart' as HTTP;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 String token;
 
 class AuthService {
+  UserService userService = Get.find();
   final http = new HTTP.Client();
   bool isLoggedIn = false;
   AuthService();
@@ -16,7 +19,7 @@ class AuthService {
   Future<bool> checkAuthState() async {
     WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (sharedPreferences.getString("token").isNotEmpty) {
+    if (sharedPreferences.getString("token") != null) {
       isLoggedIn = true;
       return true;
     } else {
@@ -56,8 +59,11 @@ class AuthService {
     if (response.statusCode == 201) {
       var parsed = jsonDecode(response.body);
       token = parsed["token"];
+      var id = parsed["_id"];
       SharedPrefs prefs = new SharedPrefs();
       prefs.settoken(token);
+      prefs.setId(id);
+      userService.getUserDetail();
       return Future.value(true);
     } else {
       return Future.value(false);

@@ -1,5 +1,6 @@
 import 'package:anbyshop/util/inputWithIcon.dart';
-import 'package:anbyshop/util/size.dart';
+import 'package:anbyshop/util/font_family.dart';
+import 'package:anbyshop/util/size_config.dart';
 import 'package:flutter/material.dart';
 
 class SearchField extends StatelessWidget {
@@ -13,7 +14,7 @@ class SearchField extends StatelessWidget {
       icon: Icons.search,
       hint: "Search Product",
       controller: null,
-      disable: false,
+      disable: true,
       fontSize: AnbySize.baseFontSize,
       isPassword: false,
       key: null,
