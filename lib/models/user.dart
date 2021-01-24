@@ -5,8 +5,10 @@
 import 'dart:convert';
 
 User userFromJson(String str) => User.fromJson(json.decode(str));
-
+Useraddress userAddressFromJson(String str) =>
+    Useraddress.fromJson(json.decode(str));
 String userToJson(User data) => json.encode(data.toJson());
+String userAddressToJson(Useraddress address) => json.encode(address.toJson());
 
 class User {
   User({

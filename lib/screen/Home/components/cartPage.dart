@@ -1,5 +1,7 @@
+import 'package:anbyshop/models/checkout.dart';
 import 'package:anbyshop/screen/Home/components/checkoutPage.dart';
 import 'package:anbyshop/services/cart.service.dart';
+import 'package:anbyshop/services/checkout.service.dart';
 import 'package:anbyshop/services/user.service.dart';
 import 'package:anbyshop/util/colors.dart';
 import 'package:anbyshop/util/font_family.dart';
@@ -19,67 +21,82 @@ class CartComponent extends StatefulWidget {
 }
 
 class _CartComponentState extends State<CartComponent> {
+  CheckoutService checkoutService = Get.put(CheckoutService(), permanent: true);
+
+  @override
+  void dispose() {
+    checkoutService.makeOrder().then((value) => print(value));
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     CartService cartService = Get.find();
     UserService userService = Get.find();
 
-    return Container(
-        height: MediaQuery.of(context).size.height / 2,
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(
-            //  top: AnbySize.basePadding * 5,
-            left: AnbySize.basePadding / 4,
-            right: AnbySize.basePadding / 4),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-        child:
-            Stack(overflow: Overflow.visible, fit: StackFit.loose, children: [
-          SingleChildScrollView(
-            child: Container(
-              margin: EdgeInsets.only(top: AnbySize.baseMargin * 4),
-              child: Obx(
-                () => cartService.isCartProductLoding.isfalse
-                    ? Column(
-                        children: List.generate(
-                          userService.user.value.cart.products.length,
-                          (index) => ProductCartVerticalCard(
-                            product:
-                                userService.user.value.cart.products[index],
-                            productIndex: index,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Container(
+          height: MediaQuery.of(context).size.height / 1.5,
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.only(
+              //  top: AnbySize.basePadding * 5,
+              left: AnbySize.basePadding / 4,
+              right: AnbySize.basePadding / 4),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+          child:
+              Stack(overflow: Overflow.visible, fit: StackFit.loose, children: [
+            SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsets.only(top: AnbySize.baseMargin * 4),
+                child: Obx(
+                  () => cartService.isCartProductLoding.isfalse
+                      ? Column(
+                          children: List.generate(
+                            userService.user.value.cart.products.length,
+                            (index) => ProductCartVerticalCard(
+                              product:
+                                  userService.user.value.cart.products[index],
+                              productIndex: index,
+                            ),
+                          ),
+                        )
+                      : Container(
+                          height: MediaQuery.of(context).size.height / 2,
+                          width: MediaQuery.of(context).size.width,
+                          child: Center(
+                            child: CircularProgressIndicator(),
                           ),
                         ),
-                      )
-                    : Container(
-                        height: MediaQuery.of(context).size.height / 2,
-                        width: MediaQuery.of(context).size.width,
-                        child: Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      ),
+                ),
               ),
             ),
-          ),
-          Positioned(
-              top: -AnbySize.baseSize * 2,
-              left: AnbySize.baseSize * 2,
-              right: AnbySize.baseSize * 2,
-              child: GestureDetector(
-                onTap: () {
-                  Get.to(CheckOutPage());
+          ])),
+      persistentFooterButtons: [
+        Container(
+          child: GestureDetector(
+            onTap: () async {
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) {
+                  return CheckOutPage();
                 },
-                child: AnbyPrimaryButton(
-                  btnText: "Checkout",
-                  outline: false,
-                  color: AnbyColors.PrimaryColor,
-                  fontSize: AnbySize.baseFontSize,
-                  icon: Icons.arrow_right,
-                  textAlign: null,
-                ),
-              ))
-        ]));
+              ));
+            },
+            child: AnbyPrimaryButton(
+              btnText: "Checkout",
+              outline: false,
+              color: AnbyColors.PrimaryColor,
+              fontSize: AnbySize.baseFontSize,
+              icon: Icons.arrow_right,
+              textAlign: null,
+            ),
+          ),
+        )
+      ],
+    );
   }
 }
 

@@ -1,8 +1,14 @@
+import 'package:anbyshop/util/colors.dart';
+import 'package:anbyshop/util/inputWithIcon.dart';
+import 'package:anbyshop/util/size_config.dart';
+import 'package:anbyshop/widgets/Gap/anbyGap.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_mapbox_navigation/library.dart';
+
+import 'TranportContainer.dart';
 
 void main() => runApp(Transport());
 
@@ -62,24 +68,25 @@ class _TransportState extends State<Transport> {
 
     _directions = MapBoxNavigation(onRouteEvent: _onEmbeddedRouteEvent);
     _options = MapBoxOptions(
-      //initialLatitude: 36.1175275,
-      //initialLongitude: -115.1839524,
-      zoom: 15.0,
-      tilt: 0.0,
-      bearing: 0.0,
-      enableRefresh: false,
-      alternatives: true,
-      voiceInstructionsEnabled: true,
-      bannerInstructionsEnabled: true,
-      allowsUTurnAtWayPoints: true,
-      mode: MapBoxNavigationMode.driving,
-      units: VoiceUnits.imperial,
-      simulateRoute: false,
-      animateBuildRoute: true,
-      longPressDestinationEnabled: true,
-      language: "en",
-      isOptimized: true,
-    );
+        //initialLatitude: 36.1175275,
+        //initialLongitude: -115.1839524,
+        zoom: 15.0,
+        tilt: 0.0,
+        bearing: 0.0,
+        enableRefresh: false,
+        alternatives: true,
+        voiceInstructionsEnabled: true,
+        bannerInstructionsEnabled: true,
+        allowsUTurnAtWayPoints: true,
+        mode: MapBoxNavigationMode.driving,
+        units: VoiceUnits.imperial,
+        simulateRoute: false,
+        animateBuildRoute: true,
+        longPressDestinationEnabled: true,
+        language: "en",
+        isOptimized: true,
+        mapStyleUrlDay: "mapbox://styles/mapbox/dark-v10",
+        mapStyleUrlNight: "mapbox://styles/mapbox/dark-v10");
 
     String platformVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
@@ -92,6 +99,19 @@ class _TransportState extends State<Transport> {
     setState(() {
       _platformVersion = platformVersion;
     });
+  }
+
+  _beginNavigation() async {
+    final cityhall =
+        WayPoint(name: "City Hall", latitude: 42.886448, longitude: -78.878372);
+    final downtown = WayPoint(
+        name: "Downtown Buffalo", latitude: 42.8866177, longitude: -78.8814924);
+
+    var wayPoints = List<WayPoint>();
+    wayPoints.add(cityhall);
+    wayPoints.add(downtown);
+
+    await _directions.startNavigation(wayPoints: wayPoints, options: _options);
   }
 
   @override
@@ -111,7 +131,8 @@ class _TransportState extends State<Transport> {
                     controller.initialize();
                   }),
             ),
-          )
+          ),
+          TranportContainer()
         ]),
       ),
     );

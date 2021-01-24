@@ -18,7 +18,7 @@ class UserService extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getUserDetail();
+    getUserDetail().then((value) => print(value));
   }
 
   Future getUserDetail() async {

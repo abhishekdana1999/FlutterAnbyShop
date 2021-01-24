@@ -16,7 +16,7 @@ class AnbyGap extends StatelessWidget {
   Widget build(BuildContext context) {
     var height = AnbySize.baseSize;
     var marginSideIsVerticle = true;
-    var bColor = Colors.white;
+    var bColor = color != null ? color : Colors.white;
     switch (this.color) {
       case 'D':
         bColor = Colors.grey[200];
