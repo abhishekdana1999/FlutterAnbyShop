@@ -2,6 +2,8 @@
 
 A Ecommerce App Using Flutter & Getx.
 
+# NOTE: The application was using apis to get data right now the apis might not be working so there are chance that app might break. Request to fix the common issue
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
